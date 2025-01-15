@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ETF Details | etfpro.com</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Basic reset and full-height layout */
+        body,
+        html {
+            height: 100%;
+            margin: 0;
+            overflow: auto;
+        }
+
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header,
+        footer {
+            flex-shrink: 0;
+        }
+
+        /* Content that is flexible, using Flexbox */
+        .content {
+            flex-grow: 1;
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            flex-wrap: wrap;
+            /* Allow wrapping of columns */
+        }
+
+        /* Left column (table) */
+        .left-column {
+            width: 48%;
+            /* Default width for left column (table) */
+            margin-right: 4%;
+            /* Space between columns */
+        }
+
+        .right-column {
+            width: 48%;
+            /* Default width for right column (chart) */
+             margin-bottom: 20px;
+        }
+
+        /* Table styling */
+        .table td,
+        .table th {
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        .table {
+            width: 100%;
+            border: 1px solid #dee2e6;
+        }
+
+        .table th {
+            background-color: #f8f9fa;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .table td {
+            border-top: 1px solid #dee2e6;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        /* Price scale container */
+        .price-scale-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            margin-top: 20px; /* Add space between chart and price scale */
+        }
+
+        /* Price scale bar */
+        .price-scale {
+            position: relative;
+            width: 80%;
+            height: 20px;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Scale bar (black bar) */
+        .scale-bar {
+            width: 100%;
+            height: 10px;
+            background-color: black;
+            border-radius: 10px;
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        /* Price marker (green circle) */
+        .price-marker {
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background-color: green;
+            z-index: 1;
+        }
+
+        /* Labels for low and high */
+        .scale-label {
+            font-size: 12px;
+            color: #333;
+        }
+
+        /* Loader Spinner */
+        #loading-spinner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 300px;
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 768px) {
+
+            /* Stack columns vertically on tablet or smaller screens */
+            .content {
+                flex-direction: column;
+                /* Switch to a column layout */
+                align-items: center;
+            }
+
+            /* Both columns should take full width on smaller screens */
+            .left-column,
+            .right-column {
+                width: 100%;
+                margin-right: 0;
+                /* Remove right margin between columns */
+                margin-bottom: 20px;
+                /* Add space between stacked columns */
+            }
+
+            /* Adjust the price scale container to fit smaller screens */
+            .price-scale-container {
+                width: 90%;
+            }
+
+            /* Adjust the chart's size for smaller screens */
+            .price-scale {
+                width: 100%;
+                height: 15px;
+                /* Smaller height for scale on mobile */
+            }
+
+            .scale-bar {
+                height: 8px;
+                /* Smaller scale bar height */
+            }
+
+            .price-marker {
+                width: 12px;
+                /* Smaller price marker */
+                height: 12px;
+            }
+
+            /* Smaller font size for labels */
+            .scale-label {
+                font-size: 10px;
+            }
+
+            /* Table adjustments for mobile */
+            .table td,
+            .table th {
+                font-size: 14px;
+                /* Smaller font size for table content */
+                padding: 6px;
+                /* Less padding in table cells */
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+
+            /* Further adjust layout for very small screens (phones) */
+            .left-column,
+            .right-column {
+                width: 100%;
+                margin-bottom: 15px;
+                /* More space between columns on smaller screens */
+            }
+
+            .table td,
+            .table th {
+                font-size: 12px;
+                /* Reduce font size even more */
+            }
+
+            .price-scale {
+                height: 12px;
+                /* Even smaller height for the price scale */
+            }
+
+            .scale-bar {
+                height: 6px;
+                /* Even smaller scale bar */
+            }
+
+            .price-marker {
+                width: 10px;
+                /* Smaller price marker */
+                height: 10px;
+            }
+
+            .scale-label {
+                font-size: 9px;
+                /* Smaller label font size */
+            }
+        }
+
+        .logo-icon {
+            font-size: 40px;
+            margin-right: 12px;
+            /* Increased margin for more space */
+            vertical-align: middle;
+            /* Align icon with text */
+            line-height: 1;
+            /* Remove extra space around the icon */
+        }
+
+
+        /* Style for the title */
+        .title {
+            font-size: 2.5rem;
+            /* Larger font size for prominence */
+            /*font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+             Clean, modern sans-serif font */
+            color: #fff;
+            /* White text color */
+            letter-spacing: 2px;
+            /* Space between letters for a sleek look */
+            /*text-transform: lowercase; /* Makes the title uppercase */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            /* Subtle shadow for depth */
+            font-weight: lighter;
+            /* Makes the title bold */
+            line-height: 1.1;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="main-container">
+
+        <!-- Header -->
+        <header class="bg-dark text-white py-3">
+            <div class="container d-flex justify-content-between align-items-center">
+                <!-- Icon and Title -->
+                <div class="d-flex align-items-center">
+                    <a href="index.html" class="text-white text-decoration-none d-flex align-items-center">
+                        <i class="fas fa-chart-line logo-icon"></i>
+                        <h1 class="title mb-0">Etfpro.com</h1>
+                    </a>
+                </div>
+                <div class="d-flex align-items-center gap-4">
+                    <a href="index.html" class="text-white text-decoration-none">Home</a>
+                    <!--a href="news.html" class="text-white text-decoration-none">News</a-->
+                    <!--a href="#why-etf" class="text-white text-decoration-none">Why ETF?</a-->
+                    <a href="#faqs" class="text-white text-decoration-none">FAQs</a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="content container my-4">
+            <div class="left-column">
+                <!-- Loading Spinner (Initially Visible) -->
+                <div id="loading-spinner" class="text-center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+
+                <!-- ETF Details Table (Initially Hidden) -->
+                <div id="etf-details" style="display: none;">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <!--thead>
+                                <tr>
+                                    <th colspan="2">ETF Details</th>
+                                </tr>
+                            </thead-->
+                            <tbody>
+                                <tr>
+                                    <td><strong>ETF Long Name</strong></td>
+                                    <td id="ticker"></td>
+                                </tr>
+                                <tr></tr>
+                                    <td><strong>ETF Short Name</strong></td>
+                                    <td id="short-name"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Symbol</strong></td>
+                                    <td id="symbol"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Current Price</strong></td>
+                                    <td id="current-price"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Trailing PE</strong></td>
+                                    <td id="pe"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>RSI</strong></td>
+                                    <td id="rsi"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Volume</strong></td>
+                                    <td id="vol"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Avg. Volume</strong></td>
+                                    <td id="avgvol"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Tracking Error</strong></td>
+                                    <td id="trerr"></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Expense Ratio</strong></td>
+                                    <td id="expr"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-column">
+                <!-- Price Variance Chart -->
+                <div class="price-variance-chart-container">
+                    <canvas id="price-variance-chart" width="400" height="160"></canvas>
+                </div>
+
+                <!-- Price Scales -->
+                <div class="price-scale-container">
+                    <!-- Day Range Scale -->
+                    <div class="price-scale">
+                        <div class="scale-bar" id="day-range-bar"></div>
+                        <div class="price-marker" id="day-price-marker" style="left: 50%;"></div>
+                    </div>
+                    <div class="d-flex justify-content-between w-100">
+                        <span id="day-low-label" class="scale-label">Day Low</span>
+                        <span id="day-high-label" class="scale-label">Day High</span>
+                    </div>
+
+                    <!-- 52-Week Range Scale -->
+                    <div class="price-scale">
+                        <div class="scale-bar" id="year-range-bar"></div>
+                        <div class="price-marker" id="year-price-marker" style="left: 50%;"></div>
+                    </div>
+                    <div class="d-flex justify-content-between w-100">
+                        <span id="52-week-low-label" class="scale-label">52-Week Low</span>
+                        <span id="52-week-high-label" class="scale-label">52-Week High</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-light text-center py-2">
+            <p class="mb-0">© <span id="year"></span>© ABCDETF.IN</p>
+        </footer>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        // Set current year in footer
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Function to get ticker from the URL
+        function getTickerFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('ticker');
+        }
+
+        function fetchEtfData(ticker) {
+            fetch(`https://etf-analysis-8i5d7aqg1-gokuls-projects-63d58c79.vercel.app/get_etf_data?ticker=${ticker}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert("Error fetching data: " + data.error);
+                    } else {
+                        console.log("data is:",data);
+
+                        // Hide the loading spinner and show the data
+                        document.getElementById('loading-spinner').style.display = 'none';
+                        document.getElementById('etf-details').style.display = 'block';
+
+                        // Update the table with the ETF data
+                        document.getElementById('ticker').innerText = data.long_name;
+                        document.getElementById('short-name').innerText = data.short_name;
+                        document.getElementById('symbol').innerText = data.symbol;
+                        document.getElementById('current-price').innerText = `Rs. ${data.current_price}`;
+                        document.getElementById('current-price').style.fontWeight = 'bold';
+                        document.getElementById('rsi').innerText = data.RSI;
+                        document.getElementById('vol').innerText = data.volume;
+                        document.getElementById('avgvol').innerText = data.average_volume;
+                        document.getElementById('pe').innerText = data.trailing_pe;
+                        document.getElementById('trerr').innerText = data.tracking_error;
+                        document.getElementById('expr').innerText = data.expense_ratio;
+
+                        // Update Day Low and Day High labels
+                        document.getElementById('day-low-label').innerText = `Day Low: ${data.day_low}`;
+                        document.getElementById('day-high-label').innerText = `Day High: ${data.day_high}`;
+
+                        // Update 52-Week Low and 52-Week High labels
+                        document.getElementById('52-week-low-label').innerText = `52-Week Low: ${data['52_week_low']}`;
+                        document.getElementById('52-week-high-label').innerText = `52-Week High: ${data['52_week_high']}`;
+
+                        // Position the Day Range marker
+                        const dayLow = data.day_low;
+                        const dayHigh = data.day_high;
+                        const currentPrice = data.current_price;
+                        const dayPosition = ((currentPrice - dayLow) / (dayHigh - dayLow)) * 100;
+                        document.getElementById('day-price-marker').style.left = `${dayPosition}%`;
+
+                        // Position the 52-Week Range marker
+                        const yearLow = data['52_week_low'];
+                        const yearHigh = data['52_week_high'];
+                        const yearPosition = ((currentPrice - yearLow) / (yearHigh - yearLow)) * 100;
+                        document.getElementById('year-price-marker').style.left = `${yearPosition}%`;
+
+                        // Extract the historical data (dates and closing prices)
+                        const chartData = data.historical_data;
+                        const labels = chartData.map(item => {
+                            const date = new Date(item.Date);  // Convert the date string into a Date object
+                            const month = date.toLocaleString('default', { month: 'short' });  // Get abbreviated month (e.g., 'May')
+                            const year = date.getFullYear().toString().slice(-2);  // Get last two digits of the year (e.g., '24' from 2024)
+                            return `${month} ${year}`;  // Format as "May 24"
+                        });
+                        // Extract formatted month and year for the x-axis labels
+                        const prices = chartData.map(item => item.Close);  // Extract closing prices
+
+                        // Create the price variance chart
+                        const ctx = document.getElementById('price-variance-chart').getContext('2d');
+                        const priceVarianceChart = new Chart(ctx, {
+                            type: 'line',
+                            data: {
+                                labels: labels,  // Formatted month-year on the x-axis
+                                datasets: [{
+                                    //label: 'Closing Price',
+                                    label: '',
+                                    data: prices,  // Array of closing prices
+                                    borderColor: '#006400',  // Dark Green color for the line
+                                    borderWidth: 1,  // Line width
+                                    fill: false,  // Don't fill under the line
+                                    pointStyle: 'rect',  // Use a rectangle instead of a circle
+                                    pointRadius: 1,  // Size of the points
+                                    pointBackgroundColor: '#006400',  // Dark Green color for the points
+                                    pointBorderColor: '#004d00'  // Darker border color for points
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                plugins: {
+                                    legend: {
+                                        display: false  // Completely hide the legend (both label and color swatch)
+                                    }
+                                },
+                                scales: {
+                                    x: {
+                                        type: 'category',
+                                        title: {
+                                            display: false,
+                                            text: 'Month'
+                                        },
+                                        ticks: {
+                                            maxRotation: 45,  // Rotate the labels for better visibility
+                                            minRotation: 45
+                                        }
+                                    },
+                                    y: {
+                                        title: {
+                                            display: true,
+                                            text: 'Price (INR)'
+                                        },
+                                        beginAtZero: false
+                                    }
+                                }
+                            }
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching ETF data:', error);
+                    document.getElementById('loading-spinner').style.display = 'none';
+                    alert('Error fetching data.');
+                });
+        }
+
+
+        // Retrieve ticker from URL and fetch data
+        const ticker = getTickerFromURL();
+        if (ticker) {
+            fetchEtfData(ticker);
+        } else {
+            alert('Ticker not provided in the URL');
+        }
+    </script>
+
+</body>
+
+</html>

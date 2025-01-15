@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>etfpro.com | FAQs</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body,
+        html {
+            height: 100%;
+            margin: 0;
+            overflow: auto;
+        }
+
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header,
+        footer {
+            flex-shrink: 0;
+        }
+
+        .content {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .logo-icon {
+            font-size: 40px;
+            margin-right: 12px;
+            vertical-align: middle;
+            line-height: 1;
+        }
+
+        .title {
+            font-size: 2.5rem;
+            color: #fff;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            font-weight: lighter;
+            line-height: 1.1;
+        }
+
+        .faq-section {
+            margin-top: 20px;
+        }
+
+        .faq-question {
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        .faq-answer {
+            margin-top: 5px;
+            margin-left: 15px;
+        }
+
+        .accordion-button:not(.collapsed) {
+            background-color: #e9ecef !important;
+            color: #212529;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="main-container">
+
+        <!-- Header -->
+        <header class="bg-dark text-white py-3">
+            <div class="container d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                    <a href="index.html" class="text-white text-decoration-none d-flex align-items-center">
+                        <i class="fas fa-chart-line logo-icon"></i>
+                        <h1 class="title mb-0">Etfpro.com</h1>
+                    </a>
+                </div>
+                <div class="d-flex align-items-center gap-4">
+                    <a href="index.html" class="text-white text-decoration-none">Home</a>
+                    <a href="#faqs" class="text-white text-decoration-none">FAQs</a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="content container">
+            <h2 class="text-left mb-4">Frequently Asked Questions</h2>
+
+            <div class="accordion" id="faqAccordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="faq1">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1Content" aria-expanded="true" aria-controls="faq1Content">
+                            What is an ETF?
+                        </button>
+                    </h2>
+                    <div id="faq1Content" class="accordion-collapse collapse show" aria-labelledby="faq1" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            An ETF, or Exchange Traded Fund, is a type of investment fund that is traded on the stock exchange, just like a stock. In India, all ETFs are passively managed and are designed to track specific indices, such as the NIFTY 50 or SENSEX. Because they follow indices and don’t require active management, ETFs are low-cost and a simple way for investors to gain exposure to a wide range of stocks or sectors.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="faq2">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2Content" aria-expanded="false" aria-controls="faq2Content">
+                            How do I invest in ETFs?
+                        </button>
+                    </h2>
+                    <div id="faq2Content" class="accordion-collapse collapse" aria-labelledby="faq2" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            To invest in ETFs, you need to open a brokerage account, research the ETFs you want to invest in, and place a buy order through your broker. ETFs are traded like stocks, so you can buy and sell them throughout the trading day at market prices.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="faq3">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3Content" aria-expanded="false" aria-controls="faq3Content">
+                            What are the advantages of investing in ETFs?
+                        </button>
+                    </h2>
+                    <div id="faq3Content" class="accordion-collapse collapse" aria-labelledby="faq3" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            ETFs offer several advantages, including diversification, lower expense ratios compared to mutual funds, flexibility to trade like stocks, and access to various asset classes and sectors. They are also tax-efficient and suitable for both short-term and long-term investment strategies.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="faq4">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4Content" aria-expanded="false" aria-controls="faq4Content">
+                            Will ETFs give better returns than actively managed mutual funds?
+                        </button>
+                    </h2>
+                    <div id="faq4Content" class="accordion-collapse collapse" aria-labelledby="faq4" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            While it’s not guaranteed, many actively managed mutual funds fail to consistently beat the indices they aim to outperform. This trend becomes even more noticeable during bear markets, when market-wide declines make it challenging for fund managers to deliver excess returns. ETFs, by tracking indices, often provide a reliable and lower-cost alternative, especially in such conditions.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="faq5">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5Content" aria-expanded="false" aria-controls="faq5Content">
+                            Are ETFs suitable for beginners?
+                        </button>
+                    </h2>
+                    <div id="faq5Content" class="accordion-collapse collapse" aria-labelledby="faq5" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Yes, ETFs are an excellent choice for beginners. They offer a simple way to start investing with a diversified portfolio. Their low expense ratios and ability to track indices make them a cost-effective and straightforward investment option.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="faq6">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq6Content" aria-expanded="false" aria-controls="faq6Content">
+                            What is the difference between ETFs and mutual funds?
+                        </button>
+                    </h2>
+                    <div id="faq6Content" class="accordion-collapse collapse" aria-labelledby="faq6" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            While both ETFs and mutual funds pool investors' money to invest in a diversified portfolio, they differ in key ways. ETFs trade like stocks on an exchange and have lower expense ratios, while mutual funds are bought and sold at the end of the trading day at the fund's net asset value (NAV).
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="faq10">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq10Content" aria-expanded="false" aria-controls="faq10Content">
+                            What should I look for before buying an ETF?
+                        </button>
+                    </h2>
+                    <div id="faq10Content" class="accordion-collapse collapse" aria-labelledby="faq10" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Before buying an ETF, consider the following:
+                            <ul>
+                                <li><strong>Expense Ratio:</strong> Lower expense ratios mean less cost to you over time.</li>
+                                <li><strong>Tracking Error:</strong> Check how closely the ETF tracks its benchmark index.</li>
+                                <li><strong>Liquidity:</strong> Highly liquid ETFs are easier to buy and sell at favorable prices.</li>
+                                <li><strong>Underlying Index:</strong> Understand the index or asset class the ETF tracks.</li>
+                                <li><strong>Performance History:</strong> Review the ETF's past performance, though it’s not a guarantee of future returns.</li>
+                                <li><strong>Fund Size:</strong> Larger funds tend to have better liquidity and lower tracking error.</li>
+                                <li><strong>Fund House:</strong> Consider the reliability and track record of the ETF provider.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="faq8">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq8Content" aria-expanded="false" aria-controls="faq8Content">
+                            Can I earn dividends by investing in ETFs?
+                        </button>
+                    </h2>
+                    <div id="faq8Content" class="accordion-collapse collapse" aria-labelledby="faq8" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Yes, many ETFs distribute dividends to their investors. These dividends are typically derived from the underlying assets held by the ETF and are distributed at regular intervals, depending on the ETF's policy.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <p>If you have more questions, shoot a mail to <a href="mailto:gokulvadakke@gmail.com">gokulvadakke@gmail.com</a> and we will respond as soon as possible.</p>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-light text-center py-2">
+            <p class="mb-0">© <span id="year"></span>© ABCDETF.IN </p>
+        </footer>
+
+    </div>
+
+    <script>
+        // Set current year in footer
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

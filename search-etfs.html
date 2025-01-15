@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>etfpro.com | Search ETFs</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body,
+        html {
+            height: 100%;
+            margin: 0;
+            overflow: auto;
+        }
+
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header,
+        footer {
+            flex-shrink: 0;
+        }
+
+        .content {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        #etf-table {
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        #etf-table th,
+        #etf-table td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        .logo-icon {
+            font-size: 40px;
+            margin-right: 12px;
+            vertical-align: middle;
+            line-height: 1;
+        }
+
+        .title {
+            font-size: 2.5rem;
+            color: #fff;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            font-weight: lighter;
+            line-height: 1.1;
+        }
+
+        .graph-buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .graph-button {
+            width: 40px;
+            height: 40px;
+            font-size: 14px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            border: 2px solid green;
+            background-color: white;
+            color: green;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .graph-button:hover {
+            background-color: #f0f0f0;
+        }
+
+        .graph-button.selected-button {
+            background-color: green;
+            color: white;
+            border: 2px solid green;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="main-container">
+
+        <!-- Header -->
+        <header class="bg-dark text-white py-3">
+            <div class="container d-flex justify-content-between align-items-center">
+                <!-- Icon and Title -->
+                <div class="d-flex align-items-center">
+                    <a href="index.html" class="text-white text-decoration-none d-flex align-items-center">
+                        <i class="fas fa-chart-line logo-icon"></i>
+                        <h1 class="title mb-0">Etfpro.com</h1>
+                    </a>
+                </div>
+                <div class="d-flex align-items-center gap-4">
+                    <a href="index.html" class="text-white text-decoration-none">Home</a>
+                    <a href="faq.html" class="text-white text-decoration-none">FAQs</a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="content container my-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <!-- Left side: Search for ETF -->
+                <div>
+                    <h2 class="text-left mb-4">Search for ETFs</h2>
+                    <div class="mb-3">
+                        <label for="index-select" class="form-label">Select an Index</label>
+                        <select id="index-select" class="form-select">
+                            <option value="" disabled>-- Select an Index --</option>
+                            <option value="^NSEI" selected>NIFTY 50</option>
+                            <option value="^CNX100">NIFTY 100</option>
+                            <option value="^BSESN">SENSEX</option>
+                            <option value="^NSEBANK">BANK NIFTY</option>
+                            <option value="NIFTY_MIDCAP_100.NS">NIFTY MIDCAP 100</option>
+                            <option value="^NSMIDCP">NIFTY NEXT 50</option>
+                            <option value="^GSPC">GLOBAL</option>
+                            <option value="NIFTYSMLCAP250.NS">Smallcap 250</option>
+                            <option value="^CNXINFRA">NIFTY INFRA</option>
+                            <option value="^CNXPHARMA">NIFTY Pharma</option>
+                            <option value="NIFTY_FIN_SERVICE.NS">NIFTY Financial Services</option>
+                            <option value="^CNXFMCG">NIFTY FMCG</option>
+                            <option value="NIFTY_HEALTHCARE.NS">NIFTY Healthcare</option>
+                            <option value="^CNXIT">NIFTY IT</option>
+                            <option value="^CNXMETAL">NIFTY Metal</option>
+                            <option value="^CNXREALTY">NIFTY Realty</option>
+                            <option value="NIFTY_OIL_AND_GAS.NS">NIFTY Oil & Gas</option>
+                            <option value="AUTOBEES.NS">NIFTY Auto</option>
+                            <option value="SHARIABEES.NS">NIFTY Shariah</option>
+                        </select>
+                    </div>
+                    <!-- Table of ETFs -->
+                    <div id="etf-list" class="mt-4">
+                        <h4>Available ETFs:</h4>
+                        <table class="table table-striped" id="etf-table">
+                            <thead>
+                                <tr>
+                                    <th>ETF Name</th>
+                                    <th>Fund House</th>
+                                </tr>
+                            </thead>
+                            <tbody id="etf-items">
+                                <!-- ETF items will be dynamically inserted here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Right side: Graph for the selected index -->
+                <div id="index-graph-container"
+                    style="width: 45%; height: 400px; align-self: flex-start; margin-left: 50px;">
+                    <canvas id="indexGraph" width=auto height=auto></canvas>
+
+                    <!-- Timeframe Buttons Below the Graph -->
+                    <div class="graph-buttons">
+                        <button class="graph-button" onclick="changeGraphTimeframe('1d')">1D</button>
+                        <button class="graph-button" onclick="changeGraphTimeframe('1wk')">1W</button>
+                        <button class="graph-button" onclick="changeGraphTimeframe('1mo')">1M</button>
+                        <button class="graph-button" onclick="changeGraphTimeframe('3mo')">3M</button>
+                        <button class="graph-button" onclick="changeGraphTimeframe('1y')">1Y</button>
+                        <button class="graph-button" onclick="changeGraphTimeframe('max')">Max</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-light text-center py-2">
+            <p class="mb-0">© <span id="year"></span> © ABCDETF.IN</p>
+        </footer>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        // Set current year in footer
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        let chartInstance = null;  // Store the chart instance globally
+
+        // Function to render graph with selected index and timeframe
+        function renderIndexGraph(indexTicker, timeframe = '1y') {
+            fetch(`https://etf-analysis-8i5d7aqg1-gokuls-projects-63d58c79.vercel.app/get_index_data_with_timeframe?index_ticker=${encodeURIComponent(indexTicker)}&timeframe=${encodeURIComponent(timeframe)}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        console.error('Error fetching index data:', data.error);
+                        document.getElementById('indexGraphContainer').innerHTML = '<p class="error-message">Graph is not available for this index.</p>';
+                        return;
+                    }
+
+                    if (!data || data.length < 2) {
+                        document.getElementById('indexGraphContainer').innerHTML = '<p class="error-message">Graph is not available for this index.</p>';
+                        return;
+                    }
+
+                    if (chartInstance) {
+                        chartInstance.destroy();
+                    }
+
+                    // Prepare labels (dates or times) and data (closing prices)
+                    const dates = data.map(item => {
+                        const date = new Date(item.Date);
+                        // Format differently based on timeframe
+                        if (timeframe === '1d') {
+                            // For 1-day data, show only time
+                            return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+                        } else if (timeframe === '1wk') {
+                            // For 1-week data, show both date and time
+                            return date.toLocaleDateString('en-US', { day: '2-digit', month: 'short' }) +
+                                `, ${date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}`;
+                        } else if (timeframe === '1mo' || timeframe === '3mo') {
+                            // For 1-month to 3-months data, show only date
+                            return date.toLocaleDateString('en-US', { day: '2-digit', month: 'short' });
+                        } else {
+                            // For 1-year or longer, show month and year
+                            return date.toLocaleDateString('en-US', { month: 'short', year: '2-digit' });
+                        }
+                    });
+
+                    const closingPrices = data.map(item => item.Close);
+
+                    // Render the graph
+                    const ctx = document.getElementById('indexGraph').getContext('2d');
+                    chartInstance = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: dates,
+                            datasets: [{
+                                label: `${indexTicker} Performance`,
+                                data: closingPrices,
+                                borderColor: '#006400',
+                                borderWidth: 1,
+                                fill: false,
+                                pointStyle: 'rect',
+                                pointRadius: 1,
+                                pointBackgroundColor: '#006400',
+                                pointBorderColor: '#004d00'
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    display: false
+                                },
+                                title: {
+                                    display: true,
+                                    text: `${indexMap[indexTicker] === 'GLOBAL' ? 'S&P500' : indexMap[indexTicker]} Index Performance`,
+                                    font: {
+                                        size: 16,
+                                        weight: 'bold'
+                                    },
+                                    padding: {
+                                        top: 10,
+                                        bottom: 20
+                                    },
+                                    align: 'center'
+                                }
+                            },
+                            scales: {
+                                x: {
+                                    display: !(timeframe === '1d' || timeframe === '1wk'),
+                                    title: {
+                                        display: false,
+                                        text: 'Date'
+                                    }
+                                },
+                                y: {
+                                    title: {
+                                        display: false,
+                                        text: 'Closing Price'
+                                    }
+                                }
+                            }
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching data for index graph:', error);
+                    document.getElementById('indexGraphContainer').innerHTML = '<p class="error-message">An error occurred while fetching the data.</p>';
+                });
+        }
+
+
+
+
+        // Function to handle the timeframe change
+        function changeGraphTimeframe(timeframe) {
+            const selectedIndex = document.getElementById('index-select').value;
+            renderIndexGraph(selectedIndex, timeframe);
+
+            // Update active button styling
+            const buttons = document.querySelectorAll('.graph-button');
+            buttons.forEach(button => {
+                button.classList.remove('selected-button');
+            });
+
+            // Add 'selected-button' class to the clicked button
+            const activeButton = document.querySelector(`.graph-button[onclick="changeGraphTimeframe('${timeframe}')"]`);
+            if (activeButton) {
+                activeButton.classList.add('selected-button');
+            }
+        }
+
+        // Automatically highlight the default selected timeframe (e.g., 1Y) on load
+        window.addEventListener('load', () => {
+            const defaultTimeframe = '1y'; // Default timeframe
+            const defaultButton = document.querySelector(`.graph-button[onclick="changeGraphTimeframe('${defaultTimeframe}')"]`);
+            if (defaultButton) {
+                defaultButton.classList.add('selected-button');
+            }
+            // Ensure the NIFTY 50 index is selected by default when the page loads
+            const defaultIndex = '^NSEI'; // The value for NIFTY 50
+
+            // Set the selected index value
+            const indexSelect = document.getElementById('index-select');
+            indexSelect.value = defaultIndex; // Select NIFTY 50 by default
+
+            // Display ETFs for NIFTY 50 and render its graph
+            displayEtfsForIndex(defaultIndex);
+            renderIndexGraph(defaultIndex);
+        });
+
+        // Mapping of index tickers to their full names
+        const indexMap = {
+            '^NSEI': 'NIFTY 50',
+            '^CNX100': 'NIFTY 100',
+            '^BSESN': 'SENSEX',
+            '^NSEBANK': 'BANK NIFTY',
+            'NIFTY_MIDCAP_100.NS': 'NIFTY MIDCAP 100',
+            '^NSMIDCP': 'NIFTY NEXT 50',
+            '^GSPC': 'GLOBAL',
+            'NIFTYSMLCAP250.NS': 'Smallcap 250',
+            '^CNXINFRA': 'NIFTY Infra',
+            '^CNXPHARMA': 'NIFTY Pharma',
+            'NIFTY_FIN_SERVICE.NS': 'NIFTY Financial Services',
+            '^CNXFMCG': 'NIFTY FMCG',
+            'NIFTY_HEALTHCARE.NS': 'NIFTY Healthcare',
+            '^CNXIT': 'NIFTY IT',
+            '^CNXMETAL': 'NIFTY Metal',
+            '^CNXREALTY': 'NIFTY Realty',
+            'NIFTY_OIL_AND_GAS.NS': 'NIFTY Oil & Gas',
+            'AUTOBEES.NS': 'NIFTY Auto',
+            'SHARIABEES.NS': 'NIFTY Shariah'
+        };
+
+        // Display ETFs for selected index
+        function displayEtfsForIndex(index) {
+            if (indexMap[index]) {
+                const fullIndexName = indexMap[index];
+                fetch(`https://etf-analysis-8i5d7aqg1-gokuls-projects-63d58c79.vercel.app/search_etfs?index_name=${encodeURIComponent(fullIndexName)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const etfItemsContainer = document.getElementById('etf-items');
+                        etfItemsContainer.innerHTML = ''; // Clear previous items
+
+                        if (data.length > 0) {
+                            data.forEach(etf => {
+                                const row = document.createElement('tr');
+
+                                // Create ETF Name cell with a clickable link
+                                const nameCell = document.createElement('td');
+                                const link = document.createElement('a');
+                                link.href = `etf-details.html?ticker=${encodeURIComponent(etf['Ticker'])}`;
+                                link.textContent = etf['ETF Name'];
+                                nameCell.appendChild(link);
+
+                                // Create Fund House cell
+                                const fundHouseCell = document.createElement('td');
+                                fundHouseCell.textContent = etf['Fund House'];
+
+                                row.appendChild(nameCell);
+                                row.appendChild(fundHouseCell);
+                                etfItemsContainer.appendChild(row);
+                            });
+                        } else {
+                            etfItemsContainer.innerHTML = '<tr><td colspan="2">No ETFs available for the selected index.</td></tr>';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching ETFs:', error);
+                        document.getElementById('etf-items').innerHTML = '<tr><td colspan="2">Error loading ETFs. Please try again later.</td></tr>';
+                    });
+            } else {
+                document.getElementById('etf-items').innerHTML = '<tr><td colspan="2">Please select an index to view ETFs.</td></tr>';
+            }
+        }
+
+        // On page load, display NIFTY 50 by default
+        /*window.addEventListener('load', function () {
+            displayEtfsForIndex('NIFTY 50');
+            renderIndexGraph('NIFTY 50');
+        });*/
+
+        // Set up event listener for index selection
+        document.getElementById('index-select').addEventListener('change', function () {
+            const selectedIndex = this.value;
+            localStorage.setItem('selectedIndex', selectedIndex);
+
+            if (selectedIndex) {
+                displayEtfsForIndex(selectedIndex);
+                renderIndexGraph(selectedIndex);
+            }
+        });
+    </script>
+</body>
+
+</html>
