@@ -95,7 +95,6 @@
 </head>
 
 <body>
-
     <div class="main-container">
 
         <!-- Header -->
@@ -117,9 +116,9 @@
 
         <!-- Main Content -->
         <main class="content container my-4">
-            <div class="d-flex justify-content-between align-items-center">
+            <div class="row">
                 <!-- Left side: Search for ETF -->
-                <div>
+                <div class="col-12 col-md-6 mb-4">
                     <h2 class="text-left mb-4">Search for ETFs</h2>
                     <div class="mb-3">
                         <label for="index-select" class="form-label">Select an Index</label>
@@ -164,18 +163,20 @@
                 </div>
 
                 <!-- Right side: Graph for the selected index -->
-                <div id="index-graph-container"
-                    style="width: 45%; height: 400px; align-self: flex-start; margin-left: 50px;">
-                    <canvas id="indexGraph" width=auto height=auto></canvas>
+                <div class="col-12 col-md-6">
+                    <div id="index-graph-container" class="mb-4"
+                        style="width: 100%; height: 400px; align-self: flex-start;">
+                        <canvas id="indexGraph" width="auto" height="auto"></canvas>
 
-                    <!-- Timeframe Buttons Below the Graph -->
-                    <div class="graph-buttons">
-                        <button class="graph-button" onclick="changeGraphTimeframe('1d')">1D</button>
-                        <button class="graph-button" onclick="changeGraphTimeframe('1wk')">1W</button>
-                        <button class="graph-button" onclick="changeGraphTimeframe('1mo')">1M</button>
-                        <button class="graph-button" onclick="changeGraphTimeframe('3mo')">3M</button>
-                        <button class="graph-button" onclick="changeGraphTimeframe('1y')">1Y</button>
-                        <button class="graph-button" onclick="changeGraphTimeframe('max')">Max</button>
+                        <!-- Timeframe Buttons Below the Graph -->
+                        <div class="graph-buttons mt-3 d-flex justify-content-center flex-wrap">
+                            <button class="graph-button" onclick="changeGraphTimeframe('1d')">1D</button>
+                            <button class="graph-button" onclick="changeGraphTimeframe('1wk')">1W</button>
+                            <button class="graph-button" onclick="changeGraphTimeframe('1mo')">1M</button>
+                            <button class="graph-button" onclick="changeGraphTimeframe('3mo')">3M</button>
+                            <button class="graph-button" onclick="changeGraphTimeframe('1y')">1Y</button>
+                            <button class="graph-button" onclick="changeGraphTimeframe('max')">Max</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -185,7 +186,6 @@
         <footer class="bg-light text-center py-2">
             <p class="mb-0">© <span id="year"></span> © ABCDETF.IN</p>
         </footer>
-
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
