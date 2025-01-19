@@ -141,7 +141,6 @@
                     <div class="mb-3">
                         <label for="index-select" class="form-label">Select an Index</label>
                         <select id="index-select" class="form-select">
-                            <option value="" disabled>-- Select an Index --</option>
                             <option value="^NSEI" selected>NIFTY 50</option>
                             <option value="^CNX100">NIFTY 100</option>
                             <option value="^BSESN">SENSEX</option>
@@ -159,8 +158,16 @@
                             <option value="^CNXMETAL">NIFTY Metal</option>
                             <option value="^CNXREALTY">NIFTY Realty</option>
                             <option value="NIFTY_OIL_AND_GAS.NS">NIFTY Oil & Gas</option>
-                            <option value="AUTOBEES.NS">NIFTY Auto</option>
+                            <option value="^CNXAUTO">NIFTY Auto</option>
                             <option value="SHARIABEES.NS">NIFTY Shariah</option>
+                            <option value="^CNXPSUBANK">NIFTY PSU Bank</option>
+                            <option value="^CNXCMDT">NIFTY Commodities</option>
+                            <option value="^CNXCONSUM">NIFTY Consumption</option>
+                            <option value="^CNXPSE">NIFTY PSE</option>
+                            <option value="NIFTY_INDIA_MFG.NS">NIFTY Manufacturing</option>
+                            <option value="NV20.NS">NIFTY 50 VALUE 20</option>
+                            <option value="GC=F">Gold</option>
+                            <option value="SI=F">Silver</option>
                         </select>
                     </div>
                 </div>
@@ -201,7 +208,7 @@
 
         // Function to render graph with selected index and timeframe
         function renderIndexGraph(indexTicker, timeframe = '1y') {
-            fetch(`https://etf-analysis-8i5d7aqg1-gokuls-projects-63d58c79.vercel.app/get_index_data_with_timeframe?index_ticker=${encodeURIComponent(indexTicker)}&timeframe=${encodeURIComponent(timeframe)}`)
+            fetch(`https://etf-analysis-2v3wnce9w-gokuls-projects-63d58c79.vercel.app/get_index_data_with_timeframe?index_ticker=${encodeURIComponent(indexTicker)}&timeframe=${encodeURIComponent(timeframe)}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.error) {
@@ -349,6 +356,7 @@
             '^CNX100': 'NIFTY 100',
             '^BSESN': 'SENSEX',
             '^NSEBANK': 'BANK NIFTY',
+            'NV20.NS': 'NIFTY 50 VALUE 20',
             'NIFTY_MIDCAP_100.NS': 'NIFTY MIDCAP 100',
             '^NSMIDCP': 'NIFTY NEXT 50',
             '^GSPC': 'GLOBAL',
@@ -362,15 +370,22 @@
             '^CNXMETAL': 'NIFTY Metal',
             '^CNXREALTY': 'NIFTY Realty',
             'NIFTY_OIL_AND_GAS.NS': 'NIFTY Oil & Gas',
-            'AUTOBEES.NS': 'NIFTY Auto',
-            'SHARIABEES.NS': 'NIFTY Shariah'
+            '^CNXAUTO': 'NIFTY Auto',
+            'SHARIABEES.NS': 'NIFTY Shariah',
+            '^CNXPSUBANK': 'NIFTY PSU Bank',
+            "^CNXCMDT": 'NIFTY Commodities',
+            "^CNXCONSUM": 'NIFTY Consumption',
+            "^CNXPSE": 'NIFTY PSE',
+            "NIFTY_INDIA_MFG.NS": 'NIFTY Manufacturing',
+            "GC=F": 'Gold',
+            "SI=F": 'Silver'
         };
 
         // Display ETFs for selected index
         function displayEtfsForIndex(index) {
             if (indexMap[index]) {
                 const fullIndexName = indexMap[index];
-                fetch(`https://etf-analysis-8i5d7aqg1-gokuls-projects-63d58c79.vercel.app/search_etfs?index_name=${encodeURIComponent(fullIndexName)}`)
+                fetch(`https://etf-analysis-2v3wnce9w-gokuls-projects-63d58c79.vercel.app/search_etfs?index_name=${encodeURIComponent(fullIndexName)}`)
                     .then(response => response.json())
                     .then(data => {
                         const etfItemsContainer = document.getElementById('etf-items');
