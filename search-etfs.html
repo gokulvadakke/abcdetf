@@ -211,7 +211,7 @@
 
         // Function to render graph with selected index and timeframe
         function renderIndexGraph(indexTicker, timeframe = '1y') {
-            fetch(`https://etf-analysis-oadi1j1ne-gokuls-projects-63d58c79.vercel.app/get_index_data_with_timeframe?index_ticker=${encodeURIComponent(indexTicker)}&timeframe=${encodeURIComponent(timeframe)}`)
+            fetch(`https://etf-analysis-5j257xpw4-gokuls-projects-63d58c79.vercel.app/get_index_data_with_timeframe?index_ticker=${encodeURIComponent(indexTicker)}&timeframe=${encodeURIComponent(timeframe)}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data.error) {
@@ -389,7 +389,7 @@
         function displayEtfsForIndex(index) {
             if (indexMap[index]) {
                 const fullIndexName = indexMap[index];
-                fetch(`https://etf-analysis-oadi1j1ne-gokuls-projects-63d58c79.vercel.app/search_etfs?index_name=${encodeURIComponent(fullIndexName)}`)
+                fetch(`https://etf-analysis-5j257xpw4-gokuls-projects-63d58c79.vercel.app/search_etfs?index_name=${encodeURIComponent(fullIndexName)}`)
                     .then(response => response.json())
                     .then(data => {
                         const etfItemsContainer = document.getElementById('etf-items');
